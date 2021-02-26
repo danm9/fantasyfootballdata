@@ -1,0 +1,19 @@
+SELECT t.conference, ts.seasonId, tst.pointsFor, tst.pointsAgainst, SUM(tst.pointsFor - tst.pointsAgainst) AS scoringMargin, SUM(
+                        (3.17*(ts.fumRetTd + ts.blockFgTd + ts.blockPrTd +ts.missedFgRetTd + ts.pickSix + ts.kickReturn + ts.puntReturn)) 
+                        + (61.67 * ((tp.passYds - tp.passLoss)/(tp.passATT - tp.passSack))) 
+                        + (26.44 * tr.rushAvg) 
+                        - (2.77 * tt.offTot) 
+                        - (67.5 * ((tdp.defPassYds - tdp.defPassLoss)/(tdp.defPassATT - tdp.defSack)))
+                        - (22.79 * tdr.defRushAvg)
+                        + (3.49 * tt.defTot)) AS calc
+FROM Teams t
+JOIN TeamStats tst ON t.teamId = tst.teamId
+JOIN TeamScoring ts ON tst.seasonId = ts.seasonId
+JOIN TeamPassing tp ON ts.seasonId = tp.seasonId
+JOIN TeamRushing tr ON ts.seasonId = tr.seasonId
+JOIN TeamTurnover tt ON ts.seasonId = tt.seasonId
+JOIN TeamDefensePassing tdp ON ts.seasonId = tdp.seasonId
+JOIN TeamDefenseRushing tdr ON ts.seasonId = tdr.seasonId
+WHERE ts.seasonId REGEXP"2010$"
+GROUP BY ts.seasonId
+ORDER BY t.conference, calc DESC;

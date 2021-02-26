@@ -1,0 +1,28 @@
+SELECT t.conference, ts.seasonId, tst.pointsFor, tst.pointsAgainst, SUM(tst.pointsFor - tst.pointsAgainst) AS margin, tst.offPointsPerGame, tst.defPtsPerGame
+FROM Teams t
+JOIN TeamStats tst ON t.teamId = tst.teamId
+JOIN TeamScoring ts ON tst.seasonId = ts.seasonId
+JOIN TeamPassing tp ON ts.seasonId = tp.seasonId
+JOIN TeamRushing tr ON ts.seasonId = tr.seasonId
+JOIN TeamTurnover tt ON ts.seasonId = tt.seasonId
+JOIN TeamDefensePassing tdp ON ts.seasonId = tdp.seasonId
+JOIN TeamDefenseRushing tdr ON ts.seasonId = tdr.seasonId
+WHERE ts.seasonId REGEXP"2012$" AND conference = "AFC"
+GROUP BY ts.seasonId
+ORDER BY margin DESC
+LIMIT 6;
+
+
+SELECT t.conference, ts.seasonId, tst.pointsFor, tst.pointsAgainst, SUM(tst.pointsFor - tst.pointsAgainst) AS margin, tst.offPointsPerGame, tst.defPtsPerGame
+FROM Teams t
+JOIN TeamStats tst ON t.teamId = tst.teamId
+JOIN TeamScoring ts ON tst.seasonId = ts.seasonId
+JOIN TeamPassing tp ON ts.seasonId = tp.seasonId
+JOIN TeamRushing tr ON ts.seasonId = tr.seasonId
+JOIN TeamTurnover tt ON ts.seasonId = tt.seasonId
+JOIN TeamDefensePassing tdp ON ts.seasonId = tdp.seasonId
+JOIN TeamDefenseRushing tdr ON ts.seasonId = tdr.seasonId
+WHERE ts.seasonId REGEXP"2012$" AND conference = "NFC"
+GROUP BY ts.seasonId
+ORDER BY margin DESC
+LIMIT 6;
